@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'"-->
+        
+        <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data:">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <link rel="stylesheet" type="text/css" href="css/milligram.min.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        
+    </head>
+    <body>
+        <div class="app" id="app">
+            <div id="userAuth"></div>
+            <div id="testComponent">
+                <button id="testProtectedButton">Test protected api</button>
+            </div>
+        </div>
+        <!--first page with button-->
+        <div class="app" id="app">
+            <div id="buttonAuth"></div>
+        </div>
+
+        <!--div class="app">
+               <div>
+                 <button class="exitBtn" id="exit">exit</button>
+               </div-->
+               <!--book page-->
+               <div class="app" id="app">
+                   <div id="bookAuth"></div>
+               </div>
+
+       <!--script type="text/javascript" src="cordova.js"></script-->
+       <script type="text/javascript" src="js/user.js"></script>
+       <script type="text/javascript" src="js/index.js"></script>
+       <script type="text/javascript" src="js/book.js"></script>
+    </body>
+</html>
