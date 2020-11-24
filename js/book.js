@@ -1,7 +1,7 @@
 
 var book = {
     containerId: 'bookAuth',
-    apiServer: APIURL+':'+API_PORT,
+    apiServer: API_URL+':'+API_PORT,
     firstPageTemplate: `
     <div class="bookAuth center firstBookPage">
       <div class="userForm">
