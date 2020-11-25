@@ -99,7 +99,7 @@ var book = {
           }
       };
 
-      xhttp.open("POST", API_URL + "/book", true);
+      xhttp.open("POST", API_URL + "/book/", true);
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send(JSON.stringify(book));
   },
@@ -144,7 +144,7 @@ var book = {
                // Typical action to be performed when the document is ready:
             }
         };
-        xhttp.open("GET", API_URL + "/books", true);
+        xhttp.open("GET", API_URL + "/books/", true);
         xhttp.send();
     },
     /* template for getBook and edit and save edit*/
@@ -204,18 +204,18 @@ var book = {
             console.log(xhttp.response);
             book.getOneBook();
          
-            document.querySelector('[name="isbn-get"]').innerHTML = res.isbn;
-            document.querySelector('[name="title"]').innerHTML = res.title;
-            document.querySelector('[name="author"]').innerHTML = res.author;
+            document.querySelector('[name="isbn-get"]').value = res.isbn;
+            document.querySelector('[name="title"]').value = res.title;
+            document.querySelector('[name="author"]').value = res.author;
             console.log(res.publish_date.substring(0,10));
-            document.querySelector('[name="publish_date"]').innerHTML = res.publish_date.substring(0,10);
-            document.querySelector('[name="publisher"]').innerHTML = res.publisher;
-            document.querySelector('[name="numOfPages"]').innerHTML = res.numOfPages; 
+            document.querySelector('[name="publish_date"]').value = res.publish_date.substring(0,10);
+            document.querySelector('[name="publisher"]').value = res.publisher;
+            document.querySelector('[name="numOfPages"]').value = res.numOfPages; 
             console.log(res.isbn);
             console.log(res.title);
         }      
       }
-      xhttp.open("GET", API_URL + "/book" + document.querySelector('[name="isbn-get"]').value, true);
+      xhttp.open("GET", API_URL + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send();
     },
@@ -233,7 +233,7 @@ var book = {
                
             }
         }
-        xhttp.open("DELETE", API_URL + "/book" + document.querySelector('[name="isbn-get"]').res, true);
+        xhttp.open("DELETE", API_URL + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send();
     },
@@ -255,7 +255,7 @@ saveEditBook: function () {
                 user.exitAuthAndMsg('changes saved successfully.');  
             }
         };
-        xhttp.open("PUT", API_URL + "/book" + document.querySelector('[name="isbn-get"]').value, true);
+        xhttp.open("PUT", API_URL + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send(JSON.stringify(book));
     },
