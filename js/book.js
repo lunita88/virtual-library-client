@@ -114,7 +114,7 @@ var book = {
         }
     };
 
-    xhttp.open("POST", API_URL + "/book/", true);
+    xhttp.open("POST", this.apiServer + "/book/", true);
     //xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     //xhttp.send(JSON.stringify(book));
     xhttp.send(form);
@@ -164,7 +164,7 @@ var book = {
                // Typical action to be performed when the document is ready:
             }
         };
-        xhttp.open("GET", API_URL + "/books/", true);
+        xhttp.open("GET", this.apiServer + "/books/", true);
         xhttp.send();
     },
     /* template for getBook and edit and save edit*/
@@ -240,7 +240,7 @@ var book = {
             console.log(res.title);
         }      
       }
-      xhttp.open("GET", API_URL + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
+      xhttp.open("GET", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send();
     },
@@ -258,7 +258,7 @@ var book = {
                
             }
         }
-        xhttp.open("DELETE", API_URL + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
+        xhttp.open("DELETE", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send();
     },
@@ -280,7 +280,7 @@ saveEditBook: function () {
                 user.exitAuthAndMsg('changes saved successfully.');  
             }
         };
-        xhttp.open("PUT", API_URL + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
+        xhttp.open("PUT", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send(JSON.stringify(book));
     },
