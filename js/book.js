@@ -52,6 +52,9 @@ var book = {
                 <label for="author">Author</label>
                 <input name="author" placeholder="book author">
             </div>
+             <div>
+                 <input type= "file" name="book_img">
+             </div>
             <div>
                 <label for="publish_date">Published Date</label>
                 <input type="date" name="publish_date">
@@ -75,33 +78,50 @@ var book = {
         document.getElementById('back').onclick = this.startSomePage.bind(this);
     },
     createBook: function () {
-      var book = {
-          "isbn": document.querySelector('[name="isbn"]').value,
-          "title": document.querySelector('[name="title"]').value,
-          "author": document.querySelector('[name="author"]').value,
-          "publish_date": document.querySelector('[name="publish_date"]').value,
-          "publisher": document.querySelector('[name="publisher"]').value,
-          "numOfPages": document.querySelector('[name="numOfPages"]').value
-      };
-      user.showSpinner();
-      console.log(book);
-      const xhttp = new XMLHttpRequest();
+      var form = new FormData();
+      var img = document.querySelector('[name="book_img"]').files[0];
+      console.log(img.name, img.size, img.type);
+      form.append('book_img', img);
+      form.append('isbn', document.querySelector('[name="isbn"]').value);
+      form.append('title', document.querySelector('[name="title"]').value);
+      form.append('author', document.querySelector('[name="author"]').value);
+      form.append('publish_date', document.querySelector('[name="publish_date"]').value);
+      form.append('publisher', document.querySelector('[name="publisher"]').value);
+      form.append('numOfPages', document.querySelector('[name="numOfPages"]').value);
+  /*
+    var book = {
+        "isbn": document.querySelector('[name="isbn"]').value,
+        "title": document.querySelector('[name="title"]').value,
+        "author": document.querySelector('[name="author"]').value,
+        "publish_date": document.querySelector('[name="publish_date"]').value,
+        "publisher": document.querySelector('[name="publisher"]').value,
+        "numOfPages": document.querySelector('[name="numOfPages"]').value
+    };
+    */
+    user.showSpinner();
+    //console.log(book);
+    const xhttp = new XMLHttpRequest();
 
-      //xhttp.open("GET", "http://185.39.3.120:8001/book", false);
+    //xhttp.open("GET", API_URL + "/book/", false);
 
-      xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-             // Typical action to be performed when the document is ready:
-             //document.getElementById("demo").innerHTML = xhttp.responseText;
-             console.log(xhttp.responseText);
-             user.hideSpinner();
-             user.exitAuthAndMsg('book is created.');
-          }
-      };
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           // Typical action to be performed when the document is ready:
+           //document.getElementById("demo").innerHTML = xhttp.responseText;
+           console.log(xhttp.responseText);
+           user.hideSpinner();
+           user.exitAuthAndMsg('book is created.');
+        }
+    };
 
-      xhttp.open("POST", API_URL + "/book/", true);
-      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      xhttp.send(JSON.stringify(book));
+    xhttp.open("POST", API_URL + "/book/", true);
+    //xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //xhttp.send(JSON.stringify(book));
+    xhttp.send(form);
+    // xhttp.open("POST", API_URL + "/book/", true);
+    // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    //xhttp.send(JSON.stringify(book));
+  },
   },
   /* template for getBooks */
   allBooksListTemplate:`
@@ -114,7 +134,7 @@ var book = {
             <tr>
                 <th>Isbn</th>
                 <th>Title</th>
-                <th>Author</th>
+                <th>Book img</th>
             </tr>
         </thead>
             <tboody>
@@ -139,7 +159,7 @@ var book = {
                 var res = JSON.parse(xhttp.responseText);
                 const allBooksList = res.length;
                 for(i=0; i < allBooksList; i++ ) {
-                  document.getElementById('table').innerHTML += "<td>" + res[i].isbn + "</td>" + "<td>" + res[i].title + "</td>" + "<td>" + res[i].author + "</td>";
+                  document.getElementById('table').innerHTML += "<td>" + res[i].isbn + "</td>" + "<td>" + res[i].title + "</td>" + "<td>" + img.files[0] + "</td>";
                 }
                // Typical action to be performed when the document is ready:
             }
@@ -166,6 +186,10 @@ var book = {
           <div>
               <label for="author">Author</label>
               <input id="author"  name="author" placeholder="book author">
+          </div>
+          <div>
+              <label for="author">Image</label>
+              <input type= "file" id ="img" name ="book_img">
           </div>
           <div>
               <label for="publish_date">Publish Date</label>
@@ -207,6 +231,7 @@ var book = {
             document.querySelector('[name="isbn-get"]').value = res.isbn;
             document.querySelector('[name="title"]').value = res.title;
             document.querySelector('[name="author"]').value = res.author;
+           // document.querySelector('[name="book_img"]').value = img.files;
             console.log(res.publish_date.substring(0,10));
             document.querySelector('[name="publish_date"]').value = res.publish_date.substring(0,10);
             document.querySelector('[name="publisher"]').value = res.publisher;
