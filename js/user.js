@@ -225,6 +225,25 @@ var user = {
         }).join(''));
     
         return JSON.parse(jsonPayload);
-    }
+    },
+    getSecondSinceEpoch: function() {
+    var dateNow= new Date();
+    var token = this.getToken();
+    var exp = this.parseJwt(token);
+    console.log("Ovo je Json.stringity" + JSON.stringify(exp));
+    exp = JSON.stringify(exp.exp);
+    console.log("ovo je exp samo" + exp);
+      var time = Math.round(dateNow.getTime() / 1000);
+      if( exp > time) {
+          console.log("Token not expired");
+          book.startSomePage();
+        }
+      else{
+          console.log("Token expired!");
+          user.showLogin();
+      }
+
+
+    },
     
 };
