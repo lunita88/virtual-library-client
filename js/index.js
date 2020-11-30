@@ -18,6 +18,7 @@ var app = {
 
         document.getElementById('testProtectedButton').onclick = this.testProtected;
         //user.init('userAuth');
+        user.getSecondSinceEpoch();
     },
     testProtected: function () {
         const xhttp = new XMLHttpRequest();
