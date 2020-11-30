@@ -122,7 +122,7 @@ var book = {
     // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     //xhttp.send(JSON.stringify(book));
   },
-  },
+  
   /* template for getBooks */
   allBooksListTemplate:`
   <div class=" bookAuth1  center">
