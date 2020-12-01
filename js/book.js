@@ -188,8 +188,7 @@ var book = {
               <input id="author"  name="author" placeholder="book author">
           </div>
           <div>
-              <label for="author">Image</label>
-              <input type= "file" id ="img" name ="book_img">
+              <img id ="book_img" src = "">
           </div>
           <div>
               <label for="publish_date">Publish Date</label>
@@ -219,6 +218,9 @@ var book = {
              
       },
     getBook: function() {
+       var img = document.getElementById('book_img');
+           img.src = 'http://185.39.3.120:8001' + book.img;
+        
       var isbn = document.querySelector('[name="isbn-get"]').value;
       console.log(isbn);
       const xhttp = new XMLHttpRequest();
