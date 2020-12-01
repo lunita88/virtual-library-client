@@ -225,7 +225,7 @@ var book = {
            alert("please check isbn");
            return;
       }
-      var imgPath = 'http://185.39.3.120:8001/uploads/';
+      var imgPath = book.apiServer;
       const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
             if(this.readyState==4 && this.status==200) {
@@ -236,13 +236,6 @@ var book = {
                 book.getOneBook();
                 console.log(res.img);
                 console.log(imgPath + res.img);
-        
-      const xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-          if(this.readyState==4 && this.status==200) {
-            var res = JSON.parse(xhttp.responseText);
-            console.log(xhttp.response);
-            book.getOneBook();
          
             document.querySelector('[name="isbn-get"]').value = res.isbn;
             document.querySelector('[name="title"]').value = res.title;
