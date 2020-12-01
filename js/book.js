@@ -188,7 +188,7 @@ var book = {
               <input id="author"  name="author" placeholder="book author">
           </div>
           <div>
-              <img id ="book_img" src = "">
+              <img id ="book_img">
           </div>
           <div>
               <label for="publish_date">Publish Date</label>
@@ -218,11 +218,25 @@ var book = {
              
       },
     getBook: function() {
-       var img = document.getElementById('book_img');
-           img.src = 'http://185.39.3.120:8001' + book.img;
         
       var isbn = document.querySelector('[name="isbn-get"]').value;
       console.log(isbn);
+        if(isbn.length < 1){
+           alert("please check isbn");
+           return;
+      }
+      var imgPath = 'http://185.39.3.120:8001/uploads/';
+      const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+            if(this.readyState==4 && this.status==200) {
+                var res = JSON.parse(xhttp.responseText);
+                var image = imgPath + res.img;
+                console.log(image);
+                console.log(xhttp.response);
+                book.getOneBook();
+                console.log(res.img);
+                console.log(imgPath + res.img);
+        
       const xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
           if(this.readyState==4 && this.status==200) {
@@ -233,7 +247,7 @@ var book = {
             document.querySelector('[name="isbn-get"]').value = res.isbn;
             document.querySelector('[name="title"]').value = res.title;
             document.querySelector('[name="author"]').value = res.author;
-           // document.querySelector('[name="book_img"]').value = img.files;
+            document.getElementById('book_img').src = image;
             console.log(res.publish_date.substring(0,10));
             document.querySelector('[name="publish_date"]').value = res.publish_date.substring(0,10);
             document.querySelector('[name="publisher"]').value = res.publisher;
@@ -242,7 +256,7 @@ var book = {
             console.log(res.title);
         }      
       }
-      xhttp.open("GET", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
+      xhttp.open("GET", this.apiServer + "/book/" + isbn, true);
       xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
       xhttp.send();
     },
