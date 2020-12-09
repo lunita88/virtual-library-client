@@ -273,25 +273,43 @@ var book = {
     },
 
 saveEditBook: function () {
+          var imgPath = 'http://185.39.3.120:8001/';
+          var form = new FormData();
+          var img = document.querySelector('[name="book_img"]');
+          console.log(img);
 
-        var book = {
+          if(img.files.length > 0) {
+            form.append('book_img', img.files[0]);
+            console.log("add image to formData")
+         }
+          console.log(img.files[0].name, img.files[0].size, img.files[0].type);
+
+          form.append('isbn', document.querySelector('[name="isbn-get"]').value);
+          form.append('title', document.querySelector('[name="title"]').value);
+          form.append('author', document.querySelector('[name="author"]').value);
+          form.append('publish_date', document.querySelector('[name="publish_date"]').value);
+          form.append('publisher', document.querySelector('[name="publisher"]').value);
+          form.append('numOfPages', document.querySelector('[name="numOfPages"]').value);
+       /* var book = {
             "isbn": document.querySelector('[name="isbn-get"]').value,
             "title": document.querySelector('[name="title"]').value,
             "author": document.querySelector('[name="author"]').value,
             "publish_date": document.querySelector('[name="publish_date"]').value,
             "publisher": document.querySelector('[name="publisher"]').value,
             "numOfPages": document.querySelector('[name="numOfPages"]').value
-        };
+        }; */
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
+                var image = imgPath + img.files[0].name;
+                console.log(image);
                 console.log(xhttp.responseText);  
                 user.exitAuthAndMsg('changes saved successfully.');  
             }
         };
         xhttp.open("PUT", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhttp.send(JSON.stringify(book));
+        //xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(form);
     },
       
 };
