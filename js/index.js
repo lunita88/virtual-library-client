@@ -15,11 +15,27 @@ var app = {
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         console.log("Received event: " + id);
+        this.showSplashScreen();
+        setTimeout(function() { 
+            app.hideSplashScreen();
+            app.testProtected();
+            user.getSecondSinceEpoch();
+        }, 3000);
 
-        document.getElementById('testProtectedButton').onclick = this.testProtected;
+        //document.getElementById('testProtectedButton').onclick = this.testProtected;
         //user.init('userAuth');
-        user.getSecondSinceEpoch();
     },
+    splashScreenTemplate: `
+           <div id="splashScreen">
+             <img src="./img/splashScreen.jpg" />
+           </div>
+        `.trim(),
+        showSplashScreen: function() {
+           document.getElementById("splash").innerHTML = this.splashScreenTemplate;   
+        },
+        hideSplashScreen: function() {
+           document.getElementById("splash").style.display = "none";   
+        },
     testProtected: function () {
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
