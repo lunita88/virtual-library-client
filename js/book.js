@@ -1,4 +1,3 @@
-
 var book = {
     containerId: 'bookAuth',
     apiServer: API_URL+':'+API_PORT,
@@ -98,29 +97,21 @@ var book = {
         "numOfPages": document.querySelector('[name="numOfPages"]').value
     };
     */
-    user.showSpinner();
+    //user.showSpinner();
     //console.log(book);
     const xhttp = new XMLHttpRequest();
 
-    //xhttp.open("GET", API_URL + "/book/", false);
-
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-           // Typical action to be performed when the document is ready:
-           //document.getElementById("demo").innerHTML = xhttp.responseText;
            console.log(xhttp.responseText);
-           user.hideSpinner();
+           //user.hideSpinner();
            user.exitAuthAndMsg('book is created.');
         }
     };
 
     xhttp.open("POST", this.apiServer + "/book/", true);
-    //xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    //xhttp.send(JSON.stringify(book));
+    xhttp.setRequestHeader("Authorization", "Bearer: " + user.getToken());
     xhttp.send(form);
-    // xhttp.open("POST", API_URL + "/book/", true);
-    // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    //xhttp.send(JSON.stringify(book));
   },
   
   /* template for getBooks */
@@ -134,7 +125,7 @@ var book = {
             <tr>
                 <th>Isbn</th>
                 <th>Title</th>
-                <th>Book img</th>
+                <th>Author</th>
             </tr>
         </thead>
             <tboody>
@@ -142,17 +133,24 @@ var book = {
                 </tr>
             </tbody>
         </table>
+         <div>
+             <button id="getBook">GET one book</button>
+           <div class="findInput" id="findByIsbn">
+             <input name="isbn-get" placeholder="ISBN">
+           </div>
+        </div>
     </div>
   </div>`.trim(),
       getBooksAll: function() {
+        document.getElementById("testProtectedButton").style.display = "none";
         document.getElementById(this.containerId).innerHTML = this.allBooksListTemplate;
         document.getElementById('back').onclick = this.startSomePage.bind(this);
+        document.getElementById("getBook").onclick = this.showInput.bind(this);
         this.getBooks();
 
       },
       getBooks: function () {
         const xhttp = new XMLHttpRequest();
-        //xhttp.open("GET", "http://185.39.3.120:8001/book", false);
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 console.log(xhttp.responseText);
@@ -161,6 +159,7 @@ var book = {
                 for(i=0; i < allBooksList; i++ ) {
                   document.getElementById('table').innerHTML += "<td>" + res[i].isbn + "</td>" + "<td>" + res[i].title + "</td>" + "<td>" + img.files[0] + "</td>";
                 }
+                  user.exitAuthAndMsg('books were found.');
                // Typical action to be performed when the document is ready:
             }
         };
@@ -188,7 +187,8 @@ var book = {
               <input id="author"  name="author" placeholder="book author">
           </div>
           <div>
-              <img id ="book_img">
+               <input type= "file" name="book_img">
+               <img name="imgName" id ="book_img">
           </div>
           <div>
               <label for="publish_date">Publish Date</label>
@@ -203,24 +203,22 @@ var book = {
               <input id="numOfPages" type="number"  name="numOfPages" placeholder="number of pages">
           
               <button id="saveEdit">SAVE EDIT</button>
-              <button id="deleteBook" >Delete book</button>
-              <input id="isbn" name="isbn-get" placeholder="ISBN"></input>
           </div>
       </div>
     </div>`.trim(),
    
     getOneBook: function() {
+        document.getElementById("testProtectedButton").style.display = "none";
         document.getElementById(this.containerId).innerHTML = this.oneBookTemplate;
         user.exitAuthAndMsg('Book found');
-        document.getElementById("deleteBook").onclick = this.deleteBook.bind(this);
         document.getElementById("saveEdit").onclick = this.saveEditBook.bind(this);
         document.getElementById('back').onclick = this.startSomePage.bind(this);
-             
+        //document.getElementById("editImg").onclick = this.saveEditImage.bind(this);  
       },
     getBook: function() {
         
       var isbn = document.querySelector('[name="isbn-get"]').value;
-      console.log(isbn);
+                 console.log(isbn);
         if(isbn.length < 1){
            alert("please check isbn");
            return;
@@ -247,6 +245,7 @@ var book = {
             document.querySelector('[name="numOfPages"]').value = res.numOfPages; 
             console.log(res.isbn);
             console.log(res.title);
+            user.exitAuthAndMsg('book is found.');
         }      
       }
       xhttp.open("GET", this.apiServer + "/book/" + isbn, true);
@@ -255,25 +254,25 @@ var book = {
     },
    
     deleteBook: function() {
-        var isbn = document.getElementById('isbn').innerHTML;
+        var isbn = document.getElementById('isbn').value;
         console.log(isbn);
 
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState==4 && this.status==200) {
                 console.log(xhttp.responseText);
-                
                 user.exitAuthAndMsg('Book deleted .');
                
             }
         }
-        xhttp.open("DELETE", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
+        xhttp.open("DELETE", this.apiServer + "/book/" + isbn, true);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.setRequestHeader("Authorization", "Bearer: " + user.getToken());
         xhttp.send();
     },
 
 saveEditBook: function () {
-          var imgPath = 'http://185.39.3.120:8001/';
+          var imgPath = book.apiServer;
           var form = new FormData();
           var img = document.querySelector('[name="book_img"]');
           console.log(img);
@@ -308,7 +307,7 @@ saveEditBook: function () {
             }
         };
         xhttp.open("PUT", this.apiServer + "/book/" + document.querySelector('[name="isbn-get"]').value, true);
-        //xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.setRequestHeader("Authorization", "Bearer: " + user.getToken());
         xhttp.send(form);
     },
       
