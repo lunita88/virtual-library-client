@@ -2,7 +2,7 @@ var book = {
     containerId: 'bookAuth',
     apiServer: API_URL+':'+API_PORT,
     firstPageTemplate: `
-    <div class="bookAuth center firstBookPage">
+    <div class="bookAuth1 center">
       <div class="userForm">
         <div class="spinner" id="spinner"></div>
           <h3>Library</h3>
@@ -22,7 +22,7 @@ var book = {
       </div>
     </div>`.trim(),
       startSomePage: function() {
-        document.getElementById("testProtectedButton").style.display = "none";
+        //document.getElementById("testProtectedButton").style.display = "none";
         document.getElementById(this.containerId).innerHTML = this.firstPageTemplate;
         document.getElementById("addBook").onclick = this.showCreatePage.bind(this);
         document.getElementById("getBooks").onclick = this.getBooksAll.bind(this);
@@ -33,7 +33,6 @@ var book = {
          document.getElementById('getBook').onclick = this.getBook.bind(this);
       },
       bookTemplate: `
-      <div class="bookAuth">
          <div class ="bookForm">
          <div class="spinner" id="spinner"></div>
          <button class"backBtn" id="back">BACK</button>
@@ -69,7 +68,6 @@ var book = {
             <div>
                <button id="createBookBtn">Save new book</button>
             </div>
-        </div>
       </div>`.trim(),
       showCreatePage: function() {
         document.getElementById(this.containerId).innerHTML = this.bookTemplate;
@@ -77,6 +75,10 @@ var book = {
         document.getElementById('back').onclick = this.startSomePage.bind(this);
     },
     createBook: function () {
+      if(!user.isLoggedIn()) {
+         user.showLogin();
+         return;
+      }
       var form = new FormData();
       var img = document.querySelector('[name="book_img"]').files[0];
       console.log(img.name, img.size, img.type);
@@ -142,7 +144,6 @@ var book = {
     </div>
   </div>`.trim(),
       getBooksAll: function() {
-        document.getElementById("testProtectedButton").style.display = "none";
         document.getElementById(this.containerId).innerHTML = this.allBooksListTemplate;
         document.getElementById('back').onclick = this.startSomePage.bind(this);
         document.getElementById("getBook").onclick = this.showInput.bind(this);
@@ -208,7 +209,7 @@ var book = {
     </div>`.trim(),
    
     getOneBook: function() {
-        document.getElementById("testProtectedButton").style.display = "none";
+        //document.getElementById("testProtectedButton").style.display = "none";
         document.getElementById(this.containerId).innerHTML = this.oneBookTemplate;
         user.exitAuthAndMsg('Book found');
         document.getElementById("saveEdit").onclick = this.saveEditBook.bind(this);
@@ -254,6 +255,10 @@ var book = {
     },
    
     deleteBook: function() {
+        if(!user.isLoggedIn()) {
+            user.showLogin();
+            return;
+        }
         var isbn = document.getElementById('isbn').value;
         console.log(isbn);
 
@@ -272,6 +277,10 @@ var book = {
     },
 
 saveEditBook: function () {
+          if(!user.isLoggedIn()) {
+              user.showLogin();
+              return;
+              }
           var imgPath = book.apiServer;
           var form = new FormData();
           var img = document.querySelector('[name="book_img"]');
