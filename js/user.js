@@ -57,7 +57,6 @@ var user = {
                         console.log(this.parseJwt(res.token));
                         localStorage.setItem('token', res.token);
                         this.exitAuthAndMsg('Login success. You may access protected route.');
-                        book.startSomePage();
                         break;
                     case 401:
                         //console.log(xhttp.responseText);
