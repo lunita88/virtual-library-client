@@ -18,8 +18,12 @@ var app = {
         this.showSplashScreen();
         setTimeout(function() { 
             app.hideSplashScreen();
-            app.testProtected();
-            user.getSecondSinceEpoch();
+            //app.testProtected();
+            if(user.isLoggedIn()) {
+                book.startSomePage();
+            }else {
+                user.showLogin();
+            }
         }, 3000);
 
         //document.getElementById('testProtectedButton').onclick = this.testProtected;
@@ -36,6 +40,7 @@ var app = {
         hideSplashScreen: function() {
            document.getElementById("splash").style.display = "none";   
         },
+    /*
     testProtected: function () {
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -76,68 +81,9 @@ var app = {
         xhttp.open("GET", "http://185.39.3.120:8001/test-protected", true);
         xhttp.setRequestHeader("Authorization", "Bearer: " + user.getToken());
         xhttp.send();
-    }
-};
+    } */
+}; 
 
-
-
-/*
- closeLoginPage: function(res,userId) { 
-    var newUser = {
-        "username": document.querySelector('[name="username"]').value,
-        "password": document.querySelector('[name="password"]').value,
-    }
-    var vUser = document.querySelector('[name="username"]').value;
-    var vPass = document.querySelector('[name="password"]').value;
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var res = JSON.parse(xhttp.responseText);
-                document.querySelector('[name="email"]').value = res.email;
-                //document.querySelector('[name="password"]').value = res.password;
-                  if(vUser == res.username && vPass == res.password ) {
-                      console.log("ovo je pasvord");
-                    
-                    document.getElementById("login").style.display = "none";
-                    document.getElementById("createBook").style.display = "block";
-                    console.log("ispravan je");
-          }      else {
-                   document.getElementById("login").style.display = "block";
-                   document.getElementById("createBook").style.display = "none";
-                   console.log("nije ispravan password");
-                   alert("nije ispravan password");
-          }
-          
-            }
-        }
-
-        xhttp.open("POST", "http://185.39.3.120:8001/login", true);
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhttp.send(JSON.stringify(newUser));
-        //document.getElementById("buttonLogin").style.display = "none";
-        //document.getElementById("startMeni").style.display = "none";
-     
-
-      
-},  
- 
-
-
-    exit: function() {
-       document.getElementById("showSignUp").style.display = "block";
-       document.getElementById("showLogin").style.display = "block";
-       document.getElementById("exit").style.display = "none";
-       document.getElementById("login").style.display = "none";
-       document.getElementById("buttonLogin").style.display = "none";
-       document.getElementById("signUpPage").style.display = "none";
-   },
-   logOut: function() {
-    document.getElementById("showSignUp").style.display = "block";
-    document.getElementById("showLogin").style.display = "block";
-    window.location.reload();
-   }
-};
-*/
 
 app.initialize();
 
